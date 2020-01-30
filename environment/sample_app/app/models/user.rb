@@ -8,4 +8,15 @@ class User < ApplicationRecord
     has_secure_password
     validates :password, presence: true,length: { minimum: 6 }
 
+    #渡された文字列のハッシュ値を返すメソッド。password_digest属性をfixtureに追加するため。
+    def User.digest(string)#Userのクラスメソッド。何にでも使うから。
+        #cost はハッシュを算出するための計算コスト。二行目で使う。ミニマムにしてある
+        cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                  BCrypt::Engine.cost
+        #引数のハッシュ値を計算してreturn.
+        BCrypt::Password.create(string, cost: cost)
+    end
+
+
+
 end
