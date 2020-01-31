@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     user = User.find_by(email:params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       log_in user#sessionshelperのヘルパーメソッド。idをcokkieに保存する
-      remember user#sessionshelperのヘルパーメソッド。記憶トーキンのdigestをDBに保存、
+      params[:session][:remember_me] == '1'?remember(user):forget(user)
       redirect_to user#→user_url(user)
     else
       #エラーメッセージを作成する
