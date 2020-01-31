@@ -36,7 +36,7 @@ class User < ApplicationRecord
     #このremember_token は、アクセサ（:remember_token）とは別物
     def authenticated?(remember_token)
         return false if remember_digest.nil?#ブラウザニコ使用時のバグ対策
-        Bcrypt::password.new(remember_digest).is_password?(remember_token)
+        BCrypt::Password.new(remember_digest).is_password?(remember_token)
     end
 
     #ユーザーのログイン情報を破棄する
