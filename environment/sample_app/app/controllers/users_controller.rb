@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params)#user_paramsは下にあるprivateメソッド
     if @user.save
       log_in @user
       flash[:success] = "Welcome to the Sample App!"
@@ -17,6 +17,21 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)#user_paramsは下にあるprivateメソッド
+      flash[:success] = "Profile Updated!"
+      redirect_to @user
+    else
+      render 'edit'
+    end
+  end
+
 
   private 
 
