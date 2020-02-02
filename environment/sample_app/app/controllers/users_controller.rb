@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-before_action :logged_in_user,only: [:edit,:update]
+before_action :logged_in_user,only: [:edit,:update,:index]
 before_action :correct_user, only: [:edit,:update]
   def new
     @user = User.new
@@ -33,6 +33,11 @@ before_action :correct_user, only: [:edit,:update]
       render 'edit'
     end
   end
+
+  def index
+    @users = User.all
+  end
+  
 
 
   private 
