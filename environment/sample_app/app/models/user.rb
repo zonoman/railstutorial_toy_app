@@ -35,14 +35,33 @@ class User < ApplicationRecord
 
     #わたされたトークンがダイジェストと一致したらtrueを返す
     #このremember_token は、アクセサ（:remember_token）とは別物
-    def authenticated?(remember_token)
-        return false if remember_digest.nil?#ブラウザニコ使用時のバグ対策
-        BCrypt::Password.new(remember_digest).is_password?(remember_token)
+   
+    #def authenticated?(remember_token)
+        #return false if remember_digest.nil?#ブラウザニコ使用時のバグ対策
+        #BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    #end
+
+    #上のやつの抽象化版。リスと11.26
+    #トークンがダイジェストと一致したらtrueを返す
+    def authenticated?(attribute,token)
+        digest = send("#{attribute}_digest")
+        return false if digest.nil?
+        BCrypt::Password.new(digest).is_password?(token)
     end
+
 
     #ユーザーのログイン情報を破棄する
     def forget 
         update_attribute(:remember_digest,nil)
+    end
+
+    #アカウントを有効にする
+    def activate
+        update_columns(activated: true, activated_at: Time.zone.now)
+    end
+
+    def send_activation_email
+        UserMailer.account_activation(self).deliver_now
     end
 
     private
