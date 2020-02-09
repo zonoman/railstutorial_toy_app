@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-    attr_accessor :remember_token,:activation_token
+    attr_accessor :remember_token,:activation_token,:reset_token
     before_save :downcase_email
     before_create :create_activation_digest
     validates :name,presence: true, length:{ maximum: 50}
@@ -73,7 +73,11 @@ class User < ApplicationRecord
     def send_password_reset_email
         UserMailer.password_reset(self).deliver_now
     end
-    
+
+    def password_reset_expired?
+        reset_sent_at < 2.hours.ago
+    end
+        
 
     private
         def downcase_email
