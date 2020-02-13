@@ -38,7 +38,6 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   test 'micropost sidebar count' do
     log_in_as(@user)
     get root_path
-    binding.pry
     assert_match "#{@user.microposts.count} microposts", response.body
     # まだマイクロポストを投稿していないユーザー
     other_user = users(:malory)
