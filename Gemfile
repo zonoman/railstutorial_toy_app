@@ -31,14 +31,15 @@ gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'bootstrap-will_paginate', '1.0.0'
+gem 'carrierwave', '1.2.2'
 gem 'faker', '1.7.3'
-gem 'will_paginate', '3.1.6'
+gem 'mini_magick', '4.7.0'
+gem 'will_paginate',  '3.1.6'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem 'bootstrap-sass', '3.4.1'
 gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # Adds support for Capybara system testing and selenium driver
@@ -69,5 +70,8 @@ group :test do
   gem 'rails-controller-testing', '1.0.2'
 end
 
+group :production do
+  gem 'fog', '1.42'
+end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
