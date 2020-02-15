@@ -38,6 +38,11 @@ gem 'jquery-rails'
 
 gem 'will_paginate', '3.1.6'
 gem 'bootstrap-will_paginate', '1.0.0'
+gem 'rubocop'
+gem 'rubocop-rake', require: false
+gem 'rubocop-rails', require: false
+gem 'rubocop-minitest', require: false
+gem 'rubocop-rubycw', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
