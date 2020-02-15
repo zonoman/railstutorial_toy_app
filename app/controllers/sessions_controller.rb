@@ -1,23 +1,20 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
-  def new
-  end
+  before_action :set_user, only: :create
+
+  def new; end
 
   def create
-    user = User.find_by(email: params[:session][:email].downcase)
-    if user && user.authenticate(params[:session][:password])
-      if user.activated?
-        log_in user
-        params[:session][:remember_me] == '1'? remember(user):forget(user)
-        redirect_back_or user
-      else
-        message = "Account not activated."
-        message += "Check your email for the activation link."
-        flash[:warning] = message
-        redirect_to root_url
-      end
+    (render('new') && return) unless @user&.authenticate(params[:session][:password])
+
+    if @user.activated?
+      log_in @user
+      params[:session][:remember_me] == '1' ? remember(@user) : forget(@user)
+      redirect_back_or @user
     else
-      flash.now[:danger] = 'invalid email/password combination'
-      render "new"
+      flash[:warning] = 'Account not activated. Check your email for the activation link.'
+      redirect_to root_url
     end
   end
 
@@ -26,4 +23,9 @@ class SessionsController < ApplicationController
     redirect_to root_url
   end
 
+  private
+
+  def set_user
+    @user = User.find_by(email: params[:session][:email].downcase)
+  end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UsersEditTest < ActionDispatch::IntegrationTest
@@ -5,38 +7,34 @@ class UsersEditTest < ActionDispatch::IntegrationTest
     @user = users(:michael)
   end
 
-  test "successful edit" do
+  test 'successful edit' do
     get edit_user_path(@user)
-    assert_equal session[:forwarding_url],edit_user_url(@user)#friendlyforwardingのテスト
+    assert_equal session[:forwarding_url], edit_user_url(@user) # friendlyforwardingのテスト
     log_in_as(@user)
     assert_redirected_to edit_user_url(@user)
     assert_nil session[:forwarding_url]
-    name = "Foo Bar"
-    email = "foo@bar.com"
-    patch user_path(@user),params:{ user: { name:  name,
-                          email: email,
-                          password: "",
-                           password_confirmation: "" } }
+    name = 'Foo Bar'
+    email = 'foo@bar.com'
+    patch user_path(@user), params: { user: { name: name,
+                                              email: email,
+                                              password: '',
+                                              password_confirmation: '' } }
     assert_not flash.empty?
-    assert_redirected_to  @user
+    assert_redirected_to @user
     @user.reload
-    assert_equal name,@user.name
-    assert_equal email,@user.email
+    assert_equal name, @user.name
+    assert_equal email, @user.email
   end
 
-
-
-  test "unsuccessful edit" do
+  test 'unsuccessful edit' do
     log_in_as(@user)
     get edit_user_path(@user)
     assert_template 'users/edit'
-    patch user_path(@user),params: {user:{name:" ",email:"foo@invalid",
-                              password:"foo",
-                              password_confirmation:"bar"}}
+    patch user_path(@user), params: { user: { name: ' ', email: 'foo@invalid',
+                                              password: 'foo',
+                                              password_confirmation: 'bar' } }
 
-    assert_template "users/edit"
-    assert_select "div.alert","The form contains 4 errors."
+    assert_template 'users/edit'
+    assert_select 'div.alert', 'The form contains 4 errors.'
   end
-
-
 end
